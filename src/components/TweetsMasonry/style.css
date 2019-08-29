@@ -1,0 +1,26 @@
+
+.masonryContainer {
+    width:1200px;
+    margin:120px auto 50px auto;
+   -moz-column-width: 13em;
+   -webkit-column-width: 13em;
+   -moz-column-gap: 1em;
+   -webkit-column-gap: 1em;
+
+  }
+
+  .tweetContainer {
+   display: inline-block;
+   margin:  0.25rem;
+   padding:  1rem;
+   width:  100%;
+   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  }
+@media (max-width:1200px){
+    .masonryContainer {
+      width:100%;
+      margin:120px 100px 50px 100px;
+
+    }
+
+  }

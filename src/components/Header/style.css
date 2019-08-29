@@ -1,0 +1,36 @@
+
+.github{
+    height: 100px;
+
+    right: 0;
+
+  position: absolute;
+
+  right: 0;
+  width: 100px;
+
+  top: 0;
+  }
+  .github img{
+    width:100%;
+  }
+
+  .title {
+    background: #f00000;
+      color: #fff;
+      font-style:italic;
+    padding: 7px ;
+    position:absolute;
+    font-size:3em;
+    top:0.5em;
+    left:0.5em;
+    width : 10em;
+    transform:rotate(-10deg)
+  }
+
+@media(max-width:1200px){
+    .title {
+
+        transform:rotate(0deg)
+      }
+}

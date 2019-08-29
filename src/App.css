@@ -1,5 +1,8 @@
+
 .App {
   text-align: center;
+  font-size:10px;
+
 }
 
 .App-logo {
@@ -8,8 +11,9 @@
   pointer-events: none;
 }
 
-.App-header {
-  background-color: #282c34;
+.App-main {
+  /* background-color: #282c34; */
+  background-color: #fff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -31,3 +35,56 @@
     transform: rotate(360deg);
   }
 }
+
+.grid-layout {
+  display: grid;
+  width:90%;
+  /* grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); */
+  grid-gap: 10px;
+  /* grid-auto-rows: minmax(180px, auto); */
+  grid-auto-flow: dense;
+  padding: 10px;
+}
+
+
+*{
+  box-sizing: border-box;
+}
+
+
+
+
+.btn {
+  position: relative;
+  font-size:2rem;
+  display: block;
+  margin: 1.5em auto;
+  padding: 0.3em 0.4em;
+
+  overflow: hidden;
+
+  border-width: 0;
+  outline: none;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+
+  background-color: #2ecc71;
+  color: #ecf0f1;
+
+  transition: background-color .3s;
+}
+
+.btn:hover, .btn:focus {
+  background-color: #27ae60;
+}
+
+.btn > * {
+  position: relative;
+}
+
+.btn span {
+  display: block;
+  padding: 12px 24px;
+}
+
+
