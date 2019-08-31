@@ -1,0 +1,73 @@
+
+footer{
+    color:#000;
+    font-style: italic;
+}
+
+.btn {
+    position: relative;
+    font-size:2rem;
+    display: block;
+    margin: 1.5em auto;
+    padding: 0.3em 0.4em;
+
+    overflow: hidden;
+
+    border-width: 0;
+    outline: none;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+
+    background-color: #2ecc71;
+    color: #ecf0f1;
+
+    transition: background-color .3s;
+  }
+
+  .btn:hover, .btn:focus {
+    background-color: #27ae60;
+  }
+
+  .btn > * {
+    position: relative;
+  }
+
+  .btn span {
+    display: block;
+    padding: 12px 24px;
+  }
+
+  .loaderContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 230px;
+  }
+
+  @keyframes animate-loader {
+      from {
+          transform: rotate(0deg);
+      }
+
+      to {
+          transform: rotate(360deg);
+      }
+  }
+
+  .loader,
+  .loader::before {
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem;
+  }
+
+  .loader {
+       border-left: 1rem solid rgba(0, 0, 0, 0.3);
+    border-right: 1rem solid rgba(0, 0, 0, 0.3);
+    border-bottom: 1rem solid rgba(0, 0, 0, 0.3);
+    border-top: 1rem solid #3abeff;
+      animation: animate-loader linear 1s infinite;
+  }
+
+

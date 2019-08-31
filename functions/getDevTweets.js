@@ -1,22 +1,9 @@
-require('dotenv').config({ path: "./.env.development.local" })
+require('dotenv').config({ path: './.env.development.local' });
 const Twit = require('twit');
 
-
 exports.handler = async (event, context) => {
-    // Netlify functions allows only 10s to run, so if the work takes 9s will send a response to the user asking him to try again
-    const startTime=new Date().getTime()
-    const deadline=9*1000;
-    setInterval(() => {
-        if(new Date().getTime()-startTime>deadline){
-            return{
-                statusCode: 500,
-                body: JSON.stringify({
-                  error:"Lambda took more than 9s"
-                })
-              };
-        }
-    }, 100);
-
+  let { start_from = 0 } = event.queryStringParameters;
+  start_from = parseInt(start_from);
 
   const theAllStartsLineup = [
     'wesbos',
@@ -41,30 +28,87 @@ exports.handler = async (event, context) => {
     'mpjme',
     'dan_abramov',
     'mweststrate',
-    'css'
+    'css',
+    'stolinski',
+    'freeCodeCamp',
+    'ossia',
+    'andrew_j_mead',
+    'why_is_js_mad',
+    'ryanflorence',
+    '_jayphelps',
+    'eastdakota',
+    'Paul_Kinlan',
+    'Chr_Bach',
+    'ka11away',
+    'prisma',
+    'jlengstorf',
+    'piamancini',
+    'palashv2',
+    'feross',
+    'jdan',
+    'DavidKPiano',
+    'FrontendDaily',
+    'derickbailey',
+    'troyhunt',
+    'GraphQL',
+    'leeb',
+    'CompuIves',
+    'aweary',
+    'Netlify',
+    'philhawksworth',
+    'gatsbyjs',
+    'EmmaWedekind',
+    'TaelurAlexis',
+    'kathyra_',
+    'erinfranmc',
+    'Syknapse',
+    'facebookai',
+    'fchollet',
+    'iamtrask',
+    'hardmaru',
+    'zacharylipton',
+    'auchenberg',
+    'iam_preethi',
+    'TheLarkInn',
+    'BenLesh',
+    'kyleshevlin',
+    'jhooks',
+    'ZackArgyle',
+    'blowdart',
+    'hugs',
+    'WithinRafael',
+    'mschoening',
+    'swyx',
+    'silveira_bells',
+    'midudev',
+    'AmarachiAmaechi',
+    'AnjanaVakil',
+    'buritica',
+    'migueldeicaza'
   ];
 
-//   intiating our Twit library with our secrets and tokem
+  //intiating our Twit library with our secrets and tokens
   const T = new Twit({
     consumer_key: process.env.consumer_key,
     consumer_secret: process.env.consumer_secret,
     access_token: process.env.access_token,
     access_token_secret: process.env.access_token_secret,
-    timeout_ms: 60 * 1000, // optional HTTP request timeout to apply to all requests.
-    strictSSL: true // optional - requires SSL certificates to be valid.
+    strictSSL: true
   });
   const getMostFavoriteTweetId = async screenName => {
-    const latestTweets = await T.get('statuses/user_timeline', {
+    let latestTweets = await T.get('statuses/user_timeline', {
       screen_name: screenName,
       exclude_replies: true,
       include_rts: false
     });
+
+    // tweets in the last 24hrs
     const tweetsOfTheDay = latestTweets.data.filter(({ created_at }) => {
       const tweetAge = new Date().getTime() - Date.parse(created_at);
       return tweetAge < 24 * 60 * 60 * 1000;
     });
 
-    // has tweeted in the last 24hrs
+    // find and return most favorited tweet in the last 24hrs OR return null if hasn't tweeted in the last 24hrs
     if (tweetsOfTheDay.length > 0) {
       let mostFavoriteTweet = null;
       const favoriteCount = 0;
@@ -79,9 +123,27 @@ exports.handler = async (event, context) => {
     return null;
   };
 
-//   fetching tweets of devs in the list and returning the  mostFavoriteTweetIds in parallel
-  const mostFavoriteTweetIds = await Promise.all(
-    theAllStartsLineup.map(async screenName => {
+  // only sending the latest 10
+  let goingToPlay = [];
+  let isNoMoreDev = false;
+  let newCursor = start_from;
+  // gone through all devs
+  if (start_from > theAllStartsLineup.length - 1) {
+    goingToPlay = [];
+    isNoMoreDev = true;
+    // sending the tweet ids of the last devs
+  } else if (start_from + 10 > theAllStartsLineup.length - 1) {
+    goingToPlay = theAllStartsLineup.slice(start_from);
+    isNoMoreDev = true;
+    newCursor = start_from + theAllStartsLineup.length - 1 - start_from;
+    // sending the tweets ids of 10 more devs
+  } else {
+    goingToPlay = theAllStartsLineup.slice(start_from, start_from + 11);
+    newCursor = start_from + 11;
+  }
+  //   fetching tweets of devs in the list and returning the  mostFavoriteTweetIds in parallel
+  let mostFavoriteTweetIds = await Promise.all(
+    goingToPlay.map(async screenName => {
       try {
         const id = await getMostFavoriteTweetId(screenName);
         return id;
@@ -90,10 +152,16 @@ exports.handler = async (event, context) => {
       }
     })
   );
+  // filtering devs who they didn't tweet in the last 24hrs
+  mostFavoriteTweetIds = mostFavoriteTweetIds.filter(tweetId => tweetId !== null);
+  // filtering errors
+  mostFavoriteTweetIds = mostFavoriteTweetIds.filter(tweet => !tweet.error);
   return {
     statusCode: 200,
     body: JSON.stringify({
-      mostFavoriteTweetIds: mostFavoriteTweetIds.filter(tweetId => tweetId !== null)
+      mostFavoriteTweetIds,
+      newCursor,
+      isNoMoreDev
     })
   };
 };

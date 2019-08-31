@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <header>
       <h1 className='title'>🔥🔥 Dev Tweets</h1>
-      <a href='http://' target='_blank' className='github' rel='noopener noreferrer'>
+      <a href='https://github.com/Fawwaz-2009/hotDevTweets' target='_blank' className='github' rel='noopener noreferrer'>
         <img src={github} alt='fork me at github' />
       </a>
     </header>

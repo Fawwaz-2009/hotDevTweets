@@ -1,0 +1,31 @@
+.notifier{
+    position: fixed;
+    top:0;
+    transform: translateY(-100px);
+	display: flex;
+	align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+	width: 12em;
+	height: 2em;
+	background-color:#4F78A4;
+	border-radius: 99px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    overflow: hidden;
+    z-index:100;
+    transition: all ease-in-out 1s;
+}
+
+.enter{
+transform: translateY(10px)
+}
+
+.success{
+	background: linear-gradient(to left bottom, #78e393, #3dd263);
+}
+
+.error{
+	background: linear-gradient(to left bottom, #e27777, #ef5656);
+
+}
